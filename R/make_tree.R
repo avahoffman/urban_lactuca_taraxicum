@@ -1,3 +1,14 @@
+#' We used clonal distance to discern among individuals. According to GenoDive:
+#' Clonal – This option calculates the number of mutationsteps that is needed to 
+#' transfer the genotype of the first individual into the genotype of the second 
+#' individual (Meirmans & Van Tienderen, 2004). Strictly taken, this assumes 
+#' clonal reproduction but the distance may also be useful in other cases. 
+#' Selecting this option from the distances menu will show a dialog in which you 
+#' can choose the mutation model that is used and set some additional parameters.
+#' 
+#' We choose an infinite allele model here because each mutation creates a new 
+#' allele, rather than stepwise changes in copy number.
+
 library(adegenet)      # CRAN v2.1.10 # as.matrix
 library(tidyverse)     # CRAN v2.0.0
 library(SNPRelate)     # Bioconductor v1.38.1
@@ -6,7 +17,7 @@ library(ggtree)        # Bioconductor v3.12.0
 library(treedataverse) # [github::YuLab-SMU/treedataverse] v0.0.1
 
 
-create_tree <- function(spp_, dist_type = "Bruvo") {
+create_tree <- function(spp_, dist_type = "clonal") {
   # Read in distances as calculated by GenoDive
   mat_ <- read_delim(paste0("data/", spp_, "_", dist_type, "_dist.tsv"))
   names_ <- mat_ %>% pull(`Obs.`)
@@ -36,7 +47,7 @@ create_tree <- function(spp_, dist_type = "Bruvo") {
   dimnames(mat_) <- list(matched_names_, matched_names_)
   mat_selection_ <- mat_[selection_with_genetic_info, selection_with_genetic_info]
   
-  # Run hierarchical clustering
+  # Perform hierarchical cluster analysis on the dissimilarity matrix
   sample.hc <- SNPRelate::snpgdsHCluster(mat_selection_)
   hc <- sample.hc$hclust
   
@@ -79,6 +90,8 @@ create_tree <- function(spp_, dist_type = "Bruvo") {
 }
 
 create_tree("LS")
-create_tree("LS", "clonal")
-create_tree("LS", "SP")
 create_tree("TO")
+
+# Test some alternatives:
+# create_tree("LS", "SP")
+# create_tree("TO", "clonal_stepwise")
