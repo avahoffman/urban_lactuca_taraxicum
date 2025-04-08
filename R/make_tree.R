@@ -77,7 +77,7 @@ create_tree <- function(spp_, dist_type = "clonal") {
     geom_tiplab(hjust = -0.1) +
     scale_fill_manual(values = my_pal) +
     guides(fill = guide_legend(title = "")) +
-    ggplot2::xlim(0, max(p$data$x) + 6) # margin so labels don't get cut off
+    ggplot2::xlim(0, max(p$data$x) + 7) # margin so labels don't get cut off
   
   # Save plot
   ggsave(paste0(paste0(
