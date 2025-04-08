@@ -15,13 +15,12 @@ make_structure_plot <- function(spp_,
     long_df %>%
     mutate(sample = str_replace(sample, "\\.BA\\.(?=.*\\.)", ".BAL.")) %>% #replace BA with BAL
     mutate(sample = str_replace(sample, "\\.MN\\.(?=.*\\.)", ".MSP.")) %>% #replace BA with BAL
-    mutate(sample = str_replace(sample, "\\.[UM]\\.", ".")) %>% #remove managed/unmanaged
     mutate(sample = str_replace(sample, "-[^.]*\\.", ".")) #look for dash in site name and remove it + spp
   
   # Read in Eric's samples
   selection_ <-
-    read_csv("data/LineageList.csv") %>%
-    mutate(sample = paste0(Species, ".", City, ".", `Site.Line`)) %>%
+    read_csv("data/LineageList_04.07.2025_EGY.csv") %>%
+    mutate(sample = paste0(Species, ".", City, ".", `Site.Mng`, ".", Line)) %>%
     filter(Species == spp_) %>%
     pull(sample)
   
