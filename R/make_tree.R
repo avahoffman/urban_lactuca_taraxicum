@@ -27,13 +27,12 @@ create_tree <- function(spp_, dist_type = "clonal") {
     names_ %>%
     str_replace("\\.BA\\.(?=.*\\.)", ".BAL.") %>% #replace BA with BAL
     str_replace("\\.MN\\.(?=.*\\.)", ".MSP.") %>% #replace BA with BAL
-    str_replace("\\.[UM]\\.", ".") %>% #remove managed/unmanaged
     str_replace("-[^.]*\\.", ".") #look for dash in site name and remove it + spp
   
   # Read in Eric's samples
   selection_ <-
-    read_csv("data/LineageList.csv") %>%
-    mutate(sample = paste0(Species, ".", City, ".", `Site.Line`)) %>%
+    read_csv("data/LineageList_04.07.2025_EGY.csv") %>%
+    mutate(sample = paste0(Species, ".", City, ".", `Site.Mng`, ".", Line)) %>%
     filter(Species == spp_) %>%
     pull(sample)
   
